@@ -32,10 +32,11 @@ router.post("/", async (req, res) => {
     phoneCountry,
     interests,
     comments,
+    subject: `Inquiry from ${name}`,
   };
 
   try {
-    await sendContactEmail(submission);
+    const result = await sendContactEmail(submission);
     res.json({ ok: true });
   } catch (err) {
     console.error("Failed to send contact email:", err);

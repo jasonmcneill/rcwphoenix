@@ -46,8 +46,10 @@ async function sendContactEmail(submission) {
   }
   const fromName = process.env.MAILJET_FROM_NAME || "Website Contact Form";
 
-  const { name, email, phone, phoneCountry, interests, comments } = submission;
-  const interestsText = interests && interests.length ? interests.join(", ") : "—";
+  const { name, email, phone, phoneCountry, interests, comments, subject } =
+    submission;
+  const interestsText =
+    interests && interests.length ? interests.join(", ") : "—";
 
   const textBody = [
     `Name: ${name}`,
@@ -60,7 +62,7 @@ async function sendContactEmail(submission) {
   ].join("\n");
 
   const htmlBody = `
-    <h2>New contact form submission</h2>
+    <h2>${escapeHtml(subject)}</h2>
     <p><strong>Name:</strong> ${escapeHtml(name)}</p>
     <p><strong>Email:</strong> ${escapeHtml(email)}</p>
     <p><strong>Phone:</strong> ${escapeHtml(phone) || "—"}${
@@ -73,7 +75,7 @@ async function sendContactEmail(submission) {
   const message = {
     From: { Email: fromEmail, Name: fromName },
     To: to,
-    Subject: `New contact form submission from ${name}`,
+    Subject: subject,
     TextPart: textBody,
     HTMLPart: htmlBody,
   };
