@@ -15,6 +15,13 @@
       "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/js/utils.js",
   });
 
+  // Remove the country dropdown from the tab order so users tab from the
+  // email field straight into the phone number input.
+  var countryButton = phoneInput
+    .closest(".iti")
+    .querySelector(".iti__selected-country");
+  if (countryButton) countryButton.setAttribute("tabindex", "-1");
+
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function setError(name, msg) {

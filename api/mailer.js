@@ -15,13 +15,23 @@ function getClient() {
 }
 
 // Parse a comma/semicolon-separated env list into Mailjet recipient objects.
+// Each entry may be a bare "email" or a named "Name <email>".
 function parseRecipients(value) {
   if (!value) return [];
   return value
     .split(/[,;]/)
     .map((e) => e.trim())
     .filter(Boolean)
-    .map((email) => ({ Email: email }));
+    .map((entry) => {
+      const match = entry.match(/^(.*?)\s*<\s*([^>]+)\s*>$/);
+      if (match) {
+        const name = match[1].trim();
+        const recipient = { Email: match[2].trim() };
+        if (name) recipient.Name = name;
+        return recipient;
+      }
+      return { Email: entry };
+    });
 }
 
 function escapeHtml(str) {
@@ -39,6 +49,8 @@ async function sendContactEmail(submission) {
       "No recipients configured. Set CONTACT_RECIPIENTS in the environment.",
     );
   }
+
+  const bcc = parseRecipients(process.env.CONTACT_BCC_RECIPIENTS);
 
   const fromEmail = process.env.MAILJET_FROM_EMAIL;
   if (!fromEmail) {
@@ -79,6 +91,10 @@ async function sendContactEmail(submission) {
     TextPart: textBody,
     HTMLPart: htmlBody,
   };
+
+  if (bcc.length) {
+    message.Bcc = bcc;
+  }
 
   // Reply-To the submitter so you can respond directly.
   if (email) {
