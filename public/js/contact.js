@@ -70,7 +70,12 @@
     e.preventDefault();
     statusEl.textContent = "";
     statusEl.className = "form-status";
-    if (!validate()) return;
+    if (!validate()) {
+      document
+        .querySelector("#contact-form")
+        .scrollIntoView({ behavior: "smooth" });
+      return;
+    }
 
     var interests = Array.prototype.map.call(
       form.querySelectorAll("input[name='interests']:checked"),
