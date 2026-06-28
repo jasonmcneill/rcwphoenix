@@ -50,10 +50,7 @@
     }
 
     var phoneVal = phoneInput.value.trim();
-    if (!phoneVal) {
-      setError("phone", "Please enter your phone number.");
-      ok = false;
-    } else if (!iti.isValidNumber()) {
+    if (phoneVal.trim().length && !iti.isValidNumber()) {
       setError("phone", "Please enter a valid phone number.");
       ok = false;
     }
