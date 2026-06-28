@@ -86,7 +86,7 @@
 
     var payload = {
       name: form.elements["name"].value.trim(),
-      email: form.elements["email"].value.trim(),
+      email: form.elements["email"].value.toLowerCase().trim(),
       phone: iti.getNumber(), // E.164
       phoneCountry: iti.getSelectedCountryData().iso2,
       interests: interests,
