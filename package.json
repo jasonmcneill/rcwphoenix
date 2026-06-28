@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "dev": "nodemon index.js",
     "ssh:prod": "ssh root@172.236.250.102 -i ~/.ssh/usd21/id_rsa",
     "deploy:prod": "npm run ssh:prod ./pull-rcwphoenix.sh"
   },
@@ -21,5 +22,8 @@
   "homepage": "https://github.com/jasonmcneill/rcwphoenix#readme",
   "dependencies": {
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
