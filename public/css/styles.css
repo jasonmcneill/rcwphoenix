@@ -436,6 +436,51 @@ main {
   border: 0;
 }
 
+.video-meta {
+  text-align: center;
+  margin: 0 auto 0.75rem;
+  max-width: 560px;
+  opacity: 0.75;
+  font-size: 0.95rem;
+  text-wrap: balance;
+}
+.video-meta p {
+  margin: 0;
+}
+.video-meta-title {
+  font-size: 1.05rem;
+  opacity: 1;
+  margin-bottom: 0.4rem !important;
+}
+
+.video-meta-title strong {
+  color: var(--gold);
+}
+
+.video-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  aspect-ratio: 16 / 9;
+}
+.video-loading .spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: video-spin 0.8s linear infinite;
+}
+@keyframes video-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 560px) {
   .site-header {
     padding: 1rem;

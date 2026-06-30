@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Videos - Phoenix Restored Church Worldwide</title>
+    <meta
+      name="description"
+      content="Videos for the Phoenix Restored Church Worldwide"
+    />
+    <meta property="og:title" content="Videos" />
+    <meta
+      property="og:description"
+      content="Videos for the Phoenix Restored Church Worldwide"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/assets/logo.png" />
+    <link rel="icon" href="/assets/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="bg"></div>
+    <div class="bg-overlay"></div>
+
+    <header class="site-header">
+      <a href="/" class="brand">
+        <img src="/assets/logo.png" alt="Restored Church Phoenix logo" />
+        <span>Phoenix RCW</span>
+      </a>
+      <nav class="site-nav">
+        <a href="/" class="active">Home</a>
+        <a href="/videos/">Videos</a>
+        <a href="/contact/">Contact Us</a>
+      </nav>
+    </header>
+
+    <main class="form-page">
+      <div class="card form-card">
+        <h1>Videos</h1>
+        <p class="subtitle">Latest Sermon:</p>
+
+        <div id="youtube-latest-sermon">
+          <div
+            class="video-loading"
+            role="status"
+            aria-label="Loading latest sermon"
+          >
+            <div class="spinner"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="socials">
+        <a
+          href="https://www.instagram.com/rcw.phx?utm_source=qr"
+          target="_blank"
+          rel="noopener"
+          aria-label="Instagram"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle
+              cx="17.5"
+              cy="6.5"
+              r="1"
+              fill="currentColor"
+              stroke="none"
+            />
+          </svg>
+        </a>
+        <a
+          href="https://www.youtube.com/@RCWPhoenix"
+          target="_blank"
+          rel="noopener"
+          aria-label="YouTube"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="26"
+            height="26"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M22 8.2c0-1.5-1.2-2.7-2.7-2.9C17.4 5 12 5 12 5s-5.4 0-7.3.3C3.2 5.5 2 6.7 2 8.2 1.8 9.7 1.8 12 1.8 12s0 2.3.2 3.8c0 1.5 1.2 2.7 2.7 2.9C6.6 19 12 19 12 19s5.4 0 7.3-.3c1.5-.2 2.7-1.4 2.7-2.9.2-1.5.2-3.8.2-3.8s0-2.3-.2-3.8z"
+            />
+            <path d="M10 9.5l5 2.5-5 2.5z" fill="currentColor" stroke="none" />
+          </svg>
+        </a>
+      </div>
+      <p>&copy; <span id="year"></span> Restored Church Worldwide</p>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      (function loadLatestSermon() {
+        var container = document.getElementById("youtube-latest-sermon");
+        if (!container) return;
+
+        fetch("/api/youtube-latest-sermon")
+          .then(function (res) {
+            if (!res.ok) throw new Error("Request failed: " + res.status);
+            return res.json();
+          })
+          .then(function (data) {
+            if (!data || !data.ok || !data.video || !data.video.videoId) {
+              throw new Error("No video in response");
+            }
+            var video = data.video;
+            var src =
+              "https://www.youtube.com/embed/" +
+              encodeURIComponent(video.videoId);
+
+            container.innerHTML = "";
+
+            // Title, date, and duration shown above the video.
+            var meta = document.createElement("div");
+            meta.className = "video-meta";
+
+            if (video.title) {
+              var titleEl = document.createElement("p");
+              titleEl.className = "video-meta-title";
+              var strong = document.createElement("strong");
+              strong.textContent = video.title;
+              titleEl.appendChild(strong);
+              meta.appendChild(titleEl);
+            }
+
+            if (video.publishedAt) {
+              var d = new Date(video.publishedAt);
+              if (!isNaN(d)) {
+                var dateEl = document.createElement("p");
+                dateEl.textContent = d.toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                });
+                meta.appendChild(dateEl);
+              }
+            }
+
+            if (video.durationText) {
+              var durEl = document.createElement("p");
+              durEl.textContent = "Duration: " + video.durationText;
+              meta.appendChild(durEl);
+            }
+
+            if (meta.childNodes.length) container.appendChild(meta);
+
+            var wrap = document.createElement("div");
+            wrap.className = "video-embed";
+
+            var iframe = document.createElement("iframe");
+            iframe.src = src;
+            iframe.title = video.title || "YouTube video player";
+            iframe.setAttribute("frameborder", "0");
+            iframe.setAttribute(
+              "allow",
+              "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+            );
+            iframe.setAttribute(
+              "referrerpolicy",
+              "strict-origin-when-cross-origin",
+            );
+            iframe.allowFullscreen = true;
+
+            wrap.appendChild(iframe);
+            container.appendChild(wrap);
+          })
+          .catch(function (err) {
+            console.error("Failed to load latest sermon:", err);
+            container.innerHTML =
+              '<p class="subtitle">The latest sermon is unavailable right now. ' +
+              'Please visit our <a href="https://www.youtube.com/@RCWPhoenix" target="_blank" rel="noopener">YouTube channel</a>.</p>';
+          });
+      })();
+    </script>
+  </body>
+</html>
