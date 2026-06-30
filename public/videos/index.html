@@ -148,14 +148,31 @@
               meta.appendChild(titleEl);
             }
 
-            if (video.publishedAt) {
-              var d = new Date(video.publishedAt);
+            // Prefer the date the video was recorded over the upload date.
+            // recordingDate (owner-entered) wins, then the live broadcast
+            // start time, then the publish date as a last resort.
+            var dateStr =
+              video.recordingDate ||
+              video.actualStartTime ||
+              video.publishedAt;
+            if (dateStr) {
+              var d = new Date(dateStr);
               if (!isNaN(d)) {
+                // recordingDate is a date-only value at midnight UTC, so format
+                // it in UTC to show that exact calendar date. Real instants
+                // (live start / publish time) are shown in Phoenix local time
+                // since this church is in Phoenix, Arizona. Locale is left as
+                // the browser default so the formatting language follows the
+                // visitor.
+                var isDateOnly =
+                  dateStr === video.recordingDate &&
+                  /T00:00:00(\.0+)?Z?$/.test(dateStr);
                 var dateEl = document.createElement("p");
                 dateEl.textContent = d.toLocaleDateString(undefined, {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
+                  timeZone: isDateOnly ? "UTC" : "America/Phoenix",
                 });
                 meta.appendChild(dateEl);
               }

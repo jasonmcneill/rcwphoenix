@@ -86,36 +86,54 @@ async function fetchLatestVideo(apiKey) {
   const videoId =
     latest.contentDetails?.videoId || latest.snippet?.resourceId?.videoId;
 
-  // The playlist response has no duration, so fetch it from videos.list.
-  const duration = videoId ? await fetchDuration(videoId, apiKey) : "";
+  // The playlist response has no duration or recording date, so fetch the
+  // extra details from videos.list.
+  const details = videoId
+    ? await fetchVideoDetails(videoId, apiKey)
+    : { duration: "", recordingDate: "", actualStartTime: "" };
 
   return {
     videoId,
     title: latest.snippet?.title || "",
     description: latest.snippet?.description || "",
     publishedAt: publishedAt(latest),
-    duration, // ISO 8601, e.g. "PT1H2M3S"
-    durationText: formatDuration(duration), // e.g. "1:02:03"
+    // Date the owner marked as when the video was recorded (date-only,
+    // e.g. "2026-05-20T00:00:00Z"); only set if entered in YouTube Studio.
+    recordingDate: details.recordingDate, // ISO 8601 date or ""
+    // For live-streamed/premiered sermons, the actual broadcast instant.
+    actualStartTime: details.actualStartTime, // ISO 8601 timestamp or ""
+    duration: details.duration, // ISO 8601, e.g. "PT1H2M3S"
+    durationText: formatDuration(details.duration), // e.g. "1:02:03"
     thumbnails: latest.snippet?.thumbnails || {},
     url: videoId ? `https://www.youtube.com/watch?v=${videoId}` : null,
   };
 }
 
-// Fetch a video's ISO 8601 duration via the videos.list endpoint.
-async function fetchDuration(videoId, apiKey) {
+// Fetch a video's duration, recording date, and live broadcast time via the
+// videos.list endpoint.
+async function fetchVideoDetails(videoId, apiKey) {
+  const empty = { duration: "", recordingDate: "", actualStartTime: "" };
   const url = new URL("https://www.googleapis.com/youtube/v3/videos");
-  url.searchParams.set("part", "contentDetails");
+  url.searchParams.set(
+    "part",
+    "contentDetails,recordingDetails,liveStreamingDetails",
+  );
   url.searchParams.set("id", videoId);
   url.searchParams.set("key", apiKey);
 
   const resp = await fetch(url);
   if (!resp.ok) {
-    // Duration is non-essential; don't fail the whole request over it.
+    // These details are non-essential; don't fail the whole request over them.
     console.error(`videos.list responded ${resp.status} ${resp.statusText}`);
-    return "";
+    return empty;
   }
-  const body = await resp.json();
-  return body.items?.[0]?.contentDetails?.duration || "";
+  const item = (await resp.json()).items?.[0];
+  if (!item) return empty;
+  return {
+    duration: item.contentDetails?.duration || "",
+    recordingDate: item.recordingDetails?.recordingDate || "",
+    actualStartTime: item.liveStreamingDetails?.actualStartTime || "",
+  };
 }
 
 // Convert an ISO 8601 duration ("PT1H2M3S") to display form ("1:02:03").
