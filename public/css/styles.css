@@ -25,6 +25,15 @@
   --input-border: rgba(255, 244, 230, 0.22);
 }
 
+a:link {
+  color: var(--gold);
+}
+
+a:visited,
+a:active {
+  color: var(--orange);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -170,6 +179,15 @@ main {
   font-family: "Cinzel", serif;
   font-weight: 700;
   font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  letter-spacing: 0.04em;
+  margin: 0.4rem 0 0.6rem;
+  color: var(--cream);
+  text-shadow: 0 2px 24px rgba(255, 122, 61, 0.25);
+}
+.hero-card h2 {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  font-size: clamp(1.4rem, 3.1vw, 2.1rem);
   letter-spacing: 0.04em;
   margin: 0.4rem 0 0.6rem;
   color: var(--cream);
