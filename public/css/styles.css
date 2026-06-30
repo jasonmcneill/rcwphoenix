@@ -1,3 +1,15 @@
+/* Cross-document View Transitions: basic fade between pages on navigation.
+   The default cross-fade animation applies automatically when enabled. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
 :root {
   --indigo: #1b1240;
   --magenta: #6d1f4a;
