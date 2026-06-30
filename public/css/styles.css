@@ -426,6 +426,8 @@ main {
 .video-embed {
   width: 100%;
   max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
   aspect-ratio: 16 / 9;
 }
 .video-embed iframe {
