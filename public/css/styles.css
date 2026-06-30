@@ -32,6 +32,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.wrapBalanced {
+  text-wrap: balance;
+}
+
 body {
   min-height: 100vh;
   display: flex;
