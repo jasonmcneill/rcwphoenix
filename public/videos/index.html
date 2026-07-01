@@ -30,7 +30,7 @@
 
     <header class="site-header">
       <a href="/" class="brand">
-        <img src="/assets/logo.png" alt="Restored Church Phoenix logo" />
+        <img src="/assets/logo.avif" alt="Restored Church Phoenix logo" />
         <span>Phoenix RCW</span>
       </a>
       <nav class="site-nav">
@@ -152,9 +152,7 @@
             // recordingDate (owner-entered) wins, then the live broadcast
             // start time, then the publish date as a last resort.
             var dateStr =
-              video.recordingDate ||
-              video.actualStartTime ||
-              video.publishedAt;
+              video.recordingDate || video.actualStartTime || video.publishedAt;
             if (dateStr) {
               var d = new Date(dateStr);
               if (!isNaN(d)) {
