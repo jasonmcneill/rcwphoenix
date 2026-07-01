@@ -10,6 +10,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public"), { maxAge: "1d" }));
 
+app.get("/contact.html", (req, res) => res.redirect(301, "/contact/"));
+app.get("/videos.html", (req, res) => res.redirect(301, "/videos/"));
+
 app.use("/api/contact", contactRouter);
 app.use("/api/youtube-latest-sermon", youtubeRouter);
 
