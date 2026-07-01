@@ -13,14 +13,19 @@ const RAW_PLAYLIST_ID =
 const PLAYLIST_ID = RAW_PLAYLIST_ID.split(/[&?]/)[0].trim();
 
 // Caching strategy --------------------------------------------------------
-// Goal: hit the YouTube Data API at most 4 times per rolling 24-hour window.
-// Two independent guards enforce this:
-//   1. TTL: serve the cached result for 6h before considering a refresh
-//      (24h / 4 = one refresh every 6h under continuous traffic).
-//   2. Hard cap: never make more than 4 live calls in any rolling 24h window,
-//      even across server restarts (timestamps are persisted in the cache).
-const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
-const MAX_CALLS_PER_DAY = 4;
+// Keep content reasonably fresh while never hammering the YouTube Data API.
+// Two independent guards work together:
+//   1. TTL: serve the cached result for 15 min before considering a refresh.
+//      This is the everyday pacer — new videos and edited recording dates
+//      show up within ~15 min. At most ~96 refreshes/day (2 API units each,
+//      well under the 10,000-unit/day free quota).
+//   2. Hard cap: a backstop against runaway refreshes (e.g. a TTL bug or an
+//      abusive client) — never make more than MAX_CALLS_PER_DAY live calls in
+//      any rolling 24h window, even across restarts (timestamps are persisted
+//      in the cache). Set high enough that the TTL, not the cap, is the normal
+//      limiter.
+const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes
+const MAX_CALLS_PER_DAY = 120;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 // Persist the cache in the OS temp dir so it survives restarts but is never
@@ -97,8 +102,8 @@ async function fetchLatestVideo(apiKey) {
     title: latest.snippet?.title || "",
     description: latest.snippet?.description || "",
     publishedAt: publishedAt(latest),
-    // Date the owner marked as when the video was recorded (date-only,
-    // e.g. "2026-05-20T00:00:00Z"); only set if entered in YouTube Studio.
+    // The "Recording date" field set in YouTube Studio (date-only, e.g.
+    // "2026-06-21T00:00:00Z"); empty if the uploader didn't fill it in.
     recordingDate: details.recordingDate, // ISO 8601 date or ""
     // For live-streamed/premiered sermons, the actual broadcast instant.
     actualStartTime: details.actualStartTime, // ISO 8601 timestamp or ""
