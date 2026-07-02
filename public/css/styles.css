@@ -34,6 +34,10 @@ a:active {
   color: var(--orange);
 }
 
+a.brand {
+  color: var(--gold) !important;
+}
+
 * {
   box-sizing: border-box;
 }
