@@ -508,10 +508,10 @@ main {
 }
 
 .event {
-  border-bottom: 1px solid white;
+  border-top: 1px solid white;
   padding: 2rem 0;
 }
 
-.event:first-child {
-  border-top: 1px solid white !important;
+.event_last {
+  border-bottom: 1px solid white;
 }
