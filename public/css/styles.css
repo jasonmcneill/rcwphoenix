@@ -501,3 +501,14 @@ main {
     margin-top: -3.5rem;
   }
 }
+
+.event h3 {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.event {
+  border-bottom: 1px solid white;
+  border-top: 1px solid white;
+  padding: 2rem 0;
+}
