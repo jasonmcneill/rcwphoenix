@@ -8,7 +8,31 @@ const port = 3003;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public"), { maxAge: "1d" }));
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    etag: true,
+    lastModified: true,
+    setHeaders: (res, filePath) => {
+      if (/\.(html|js)$/.test(filePath)) {
+        // Always revalidate with the server so edits show up immediately;
+        // ETag/Last-Modified still let unchanged files return a cheap 304.
+        res.setHeader("Cache-Control", "no-cache");
+      } else if (filePath.endsWith(".css")) {
+        res.setHeader(
+          "Cache-Control",
+          "public, max-age=3600, must-revalidate"
+        );
+      } else {
+        // images and other static assets change rarely; cache longer but
+        // still force a revalidation check once the cache expires.
+        res.setHeader(
+          "Cache-Control",
+          "public, max-age=86400, must-revalidate"
+        );
+      }
+    },
+  })
+);
 
 app.get("/contact.html", (req, res) => res.redirect(301, "/contact/"));
 app.get("/videos.html", (req, res) => res.redirect(301, "/videos/"));
