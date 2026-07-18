@@ -27,6 +27,21 @@
       href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/css/intlTelInput.css"
     />
     <link rel="stylesheet" href="/css/styles.css" />
+    <script>
+      // Cross-document View Transitions are only enabled for browsers that
+      // support the API — injected via JS rather than a static CSS
+      // @view-transition rule so unsupporting/non-standard browsers (e.g.
+      // in-app browsers like Facebook's) never even see the at-rule.
+      if (
+        "startViewTransition" in document &&
+        !matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        document.head.insertAdjacentHTML(
+          "beforeend",
+          "<style>@view-transition{navigation:auto}</style>",
+        );
+      }
+    </script>
   </head>
   <body>
     <div class="bg"></div>
