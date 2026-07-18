@@ -29,9 +29,12 @@ a:link {
   color: var(--gold);
 }
 
-a:visited,
 a:active {
   color: var(--orange);
+}
+
+a:visited {
+  color: var(--gold);
 }
 
 a.brand {
