@@ -54,6 +54,11 @@
             <div class="spinner"></div>
           </div>
         </div>
+
+        <section id="previous-sermons" class="previous-sermons" hidden>
+          <h2 class="previous-sermons-title">Previous Sermons</h2>
+          <ul id="previous-sermons-list" class="sermon-list"></ul>
+        </section>
       </div>
     </main>
 
@@ -115,97 +120,305 @@
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
 
-      (function loadLatestSermon() {
+      (function loadSermons() {
         var container = document.getElementById("youtube-latest-sermon");
         if (!container) return;
 
-        fetch("/api/youtube-latest-sermon")
+        // Format a sermon's date, preferring the owner-entered recording date,
+        // then the live broadcast start, then the publish date. recordingDate
+        // is a date-only value at midnight UTC, so render it in UTC to show
+        // that exact calendar date; real instants use Phoenix local time.
+        function formatSermonDate(video) {
+          var dateStr =
+            video.recordingDate || video.actualStartTime || video.publishedAt;
+          if (!dateStr) return "";
+          var d = new Date(dateStr);
+          if (isNaN(d)) return "";
+          var isDateOnly =
+            dateStr === video.recordingDate &&
+            /T00:00:00(\.0+)?Z?$/.test(dateStr);
+          return d.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            timeZone: isDateOnly ? "UTC" : "America/Phoenix",
+          });
+        }
+
+        // The persistent top "Latest Sermon" iframe, once rendered.
+        var latestIframe = null;
+
+        // Stop callbacks for currently-playing Previous Sermon cards (each
+        // restores its facade). Kept separate from the latest player so it can
+        // be paused without disturbing the previous ones and vice versa.
+        var previousPlayers = [];
+
+        // Restore every playing Previous Sermon card back to its facade.
+        function stopPreviousPlayers() {
+          var players = previousPlayers;
+          previousPlayers = [];
+          players.forEach(function (stop) {
+            stop();
+          });
+        }
+
+        // Load the YouTube IFrame API once so we can watch the latest player's
+        // state. Resolves with the global YT object.
+        var ytApiReady = null;
+        function loadYouTubeApi() {
+          if (ytApiReady) return ytApiReady;
+          ytApiReady = new Promise(function (resolve) {
+            if (window.YT && window.YT.Player) {
+              resolve(window.YT);
+              return;
+            }
+            var prev = window.onYouTubeIframeAPIReady;
+            window.onYouTubeIframeAPIReady = function () {
+              if (typeof prev === "function") prev();
+              resolve(window.YT);
+            };
+            var tag = document.createElement("script");
+            tag.src = "https://www.youtube.com/iframe_api";
+            document.head.appendChild(tag);
+          });
+          return ytApiReady;
+        }
+
+        // Build a YouTube player iframe for a video. enablejsapi=1 lets us
+        // pause it later via postMessage.
+        function buildIframe(video, autoplay) {
+          var iframe = document.createElement("iframe");
+          iframe.src =
+            "https://www.youtube.com/embed/" +
+            encodeURIComponent(video.videoId) +
+            "?enablejsapi=1" +
+            (autoplay ? "&autoplay=1" : "");
+          iframe.title = video.title || "YouTube video player";
+          iframe.setAttribute("frameborder", "0");
+          iframe.setAttribute(
+            "allow",
+            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+          );
+          iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+          iframe.allowFullscreen = true;
+          return iframe;
+        }
+
+        // Pause a playing YouTube iframe via the postMessage API. A no-op if
+        // the video is already paused, so there is no flicker or reload.
+        function pauseIframe(iframe) {
+          try {
+            iframe.contentWindow.postMessage(
+              JSON.stringify({ event: "command", func: "pauseVideo", args: [] }),
+              "*",
+            );
+          } catch (e) {
+            /* iframe not ready yet — nothing playing to stop */
+          }
+        }
+
+        // Pick the best available thumbnail URL for a video.
+        function thumbUrl(video) {
+          var t = video.thumbnails || {};
+          var best =
+            t.maxres || t.standard || t.high || t.medium || t.default;
+          return best && best.url
+            ? best.url
+            : "https://i.ytimg.com/vi/" +
+                encodeURIComponent(video.videoId) +
+                "/hqdefault.jpg";
+        }
+
+        // Build the title/date/duration block shown above a playing video.
+        // Returns null if there is nothing to show.
+        function buildMeta(video) {
+          var meta = document.createElement("div");
+          meta.className = "video-meta";
+
+          if (video.title) {
+            var titleEl = document.createElement("p");
+            titleEl.className = "video-meta-title";
+            var strong = document.createElement("strong");
+            strong.textContent = video.title;
+            titleEl.appendChild(strong);
+            meta.appendChild(titleEl);
+          }
+
+          var dateText = formatSermonDate(video);
+          if (dateText) {
+            var dateEl = document.createElement("p");
+            dateEl.textContent = dateText;
+            meta.appendChild(dateEl);
+          }
+
+          if (video.durationText) {
+            var durEl = document.createElement("p");
+            durEl.textContent = "Duration: " + video.durationText;
+            meta.appendChild(durEl);
+          }
+
+          return meta.childNodes.length ? meta : null;
+        }
+
+        // Render the newest sermon as an embedded player at the top.
+        function renderLatest(video) {
+          container.innerHTML = "";
+
+          var meta = buildMeta(video);
+          if (meta) container.appendChild(meta);
+
+          var wrap = document.createElement("div");
+          wrap.className = "video-embed";
+          var iframe = buildIframe(video, false);
+          iframe.id = "latest-sermon-player";
+          wrap.appendChild(iframe);
+          container.appendChild(wrap);
+
+          latestIframe = iframe;
+
+          // When the latest sermon starts playing (via its own play button),
+          // pause every Previous Sermon so only one video plays at a time.
+          loadYouTubeApi().then(function (YT) {
+            new YT.Player(iframe, {
+              events: {
+                onStateChange: function (event) {
+                  if (event.data === YT.PlayerState.PLAYING) {
+                    stopPreviousPlayers();
+                  }
+                },
+              },
+            });
+          });
+        }
+
+        // Render older sermons as lightweight thumbnail cards. The heavy
+        // YouTube player iframe is only created when a card is clicked (the
+        // "facade" pattern), so the page stays fast no matter how many there
+        // are.
+        function renderPrevious(videos) {
+          var section = document.getElementById("previous-sermons");
+          var list = document.getElementById("previous-sermons-list");
+          if (!section || !list || !videos.length) return;
+
+          videos.forEach(function (video) {
+            var item = document.createElement("li");
+            item.className = "sermon-card";
+
+            var button = document.createElement("button");
+            button.type = "button";
+            button.className = "sermon-facade";
+            button.setAttribute(
+              "aria-label",
+              "Play " + (video.title || "sermon"),
+            );
+
+            var thumb = document.createElement("span");
+            thumb.className = "sermon-thumb";
+
+            var img = document.createElement("img");
+            img.src = thumbUrl(video);
+            img.alt = "";
+            img.loading = "lazy";
+            thumb.appendChild(img);
+
+            var play = document.createElement("span");
+            play.className = "sermon-play";
+            play.setAttribute("aria-hidden", "true");
+            thumb.appendChild(play);
+
+            button.appendChild(thumb);
+
+            var info = document.createElement("span");
+            info.className = "sermon-info";
+
+            var t = document.createElement("span");
+            t.className = "sermon-card-title";
+            t.textContent = video.title || "Sermon";
+            info.appendChild(t);
+
+            var dateText = formatSermonDate(video);
+            if (dateText) {
+              var dt = document.createElement("span");
+              dt.className = "sermon-card-date";
+              dt.textContent = dateText;
+              info.appendChild(dt);
+            }
+
+            if (video.durationText) {
+              var dur = document.createElement("span");
+              dur.className = "sermon-card-duration";
+              dur.textContent = "Duration: " + video.durationText;
+              info.appendChild(dur);
+            }
+
+            button.appendChild(info);
+
+            // On click, stop every other player first so two videos never
+            // play at once, then swap this thumbnail for the actual player.
+            button.addEventListener("click", function () {
+              // Pause the latest player and stop any other playing card so
+              // only one video plays at a time.
+              if (latestIframe) pauseIframe(latestIframe);
+              stopPreviousPlayers();
+
+              var meta = buildMeta(video);
+              var wrap = document.createElement("div");
+              wrap.className = "video-embed";
+              wrap.appendChild(buildIframe(video, true));
+              item.classList.add("is-playing");
+              if (meta) item.replaceChildren(meta, wrap);
+              else item.replaceChildren(wrap);
+
+              // When another player starts, restore this card's facade.
+              previousPlayers.push(function () {
+                item.classList.remove("is-playing");
+                item.replaceChildren(button);
+              });
+            });
+
+            item.appendChild(button);
+            list.appendChild(item);
+          });
+
+          section.hidden = false;
+        }
+
+        fetch("/api/youtube-sermons")
           .then(function (res) {
             if (!res.ok) throw new Error("Request failed: " + res.status);
             return res.json();
           })
           .then(function (data) {
-            if (!data || !data.ok || !data.video || !data.video.videoId) {
+            var sermons =
+              data && data.ok && Array.isArray(data.sermons)
+                ? data.sermons
+                : [];
+            var latest = sermons[0];
+            if (!latest || !latest.videoId) {
               throw new Error("No video in response");
             }
-            var video = data.video;
-            var src =
-              "https://www.youtube.com/embed/" +
-              encodeURIComponent(video.videoId);
 
-            container.innerHTML = "";
-
-            // Title, date, and duration shown above the video.
-            var meta = document.createElement("div");
-            meta.className = "video-meta";
-
-            if (video.title) {
-              var titleEl = document.createElement("p");
-              titleEl.className = "video-meta-title";
-              var strong = document.createElement("strong");
-              strong.textContent = video.title;
-              titleEl.appendChild(strong);
-              meta.appendChild(titleEl);
-            }
-
-            // Prefer the date the video was recorded over the upload date.
-            // recordingDate (owner-entered) wins, then the live broadcast
-            // start time, then the publish date as a last resort.
-            var dateStr =
-              video.recordingDate || video.actualStartTime || video.publishedAt;
-            if (dateStr) {
-              var d = new Date(dateStr);
-              if (!isNaN(d)) {
-                // recordingDate is a date-only value at midnight UTC, so format
-                // it in UTC to show that exact calendar date. Real instants
-                // (live start / publish time) are shown in Phoenix local time
-                // since this church is in Phoenix, Arizona. Locale is left as
-                // the browser default so the formatting language follows the
-                // visitor.
-                var isDateOnly =
-                  dateStr === video.recordingDate &&
-                  /T00:00:00(\.0+)?Z?$/.test(dateStr);
-                var dateEl = document.createElement("p");
-                dateEl.textContent = d.toLocaleDateString(undefined, {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  timeZone: isDateOnly ? "UTC" : "America/Phoenix",
-                });
-                meta.appendChild(dateEl);
+            // Localhost testing aid: if the playlist only has one sermon,
+            // pad the list to 10 copies of it so the "Previous Sermons"
+            // layout can be seen while developing. Never runs in production.
+            var isLocalhost =
+              location.hostname === "localhost" ||
+              location.hostname === "127.0.0.1";
+            if (isLocalhost && sermons.length < 2) {
+              while (sermons.length < 10) {
+                sermons.push(latest);
               }
             }
 
-            if (video.durationText) {
-              var durEl = document.createElement("p");
-              durEl.textContent = "Duration: " + video.durationText;
-              meta.appendChild(durEl);
-            }
-
-            if (meta.childNodes.length) container.appendChild(meta);
-
-            var wrap = document.createElement("div");
-            wrap.className = "video-embed";
-
-            var iframe = document.createElement("iframe");
-            iframe.src = src;
-            iframe.title = video.title || "YouTube video player";
-            iframe.setAttribute("frameborder", "0");
-            iframe.setAttribute(
-              "allow",
-              "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+            renderLatest(latest);
+            renderPrevious(
+              sermons.slice(1).filter(function (v) {
+                return v && v.videoId;
+              }),
             );
-            iframe.setAttribute(
-              "referrerpolicy",
-              "strict-origin-when-cross-origin",
-            );
-            iframe.allowFullscreen = true;
-
-            wrap.appendChild(iframe);
-            container.appendChild(wrap);
           })
           .catch(function (err) {
-            console.error("Failed to load latest sermon:", err);
+            console.error("Failed to load sermons:", err);
             container.innerHTML =
               '<p class="subtitle">The latest sermon is unavailable right now. ' +
               'Please visit our <a href="https://www.youtube.com/@RCWPhoenix" target="_blank" rel="noopener">YouTube channel</a>.</p>';
