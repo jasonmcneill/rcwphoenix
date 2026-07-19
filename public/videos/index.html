@@ -57,8 +57,7 @@
 
     <main class="form-page">
       <div class="card form-card">
-        <h1>Videos</h1>
-        <p class="subtitle">Latest Sermon:</p>
+        <h1 class="text-center">Videos</h1>
 
         <div id="youtube-latest-sermon">
           <div
@@ -214,7 +213,10 @@
             "allow",
             "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
           );
-          iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+          iframe.setAttribute(
+            "referrerpolicy",
+            "strict-origin-when-cross-origin",
+          );
           iframe.allowFullscreen = true;
           return iframe;
         }
@@ -224,7 +226,11 @@
         function pauseIframe(iframe) {
           try {
             iframe.contentWindow.postMessage(
-              JSON.stringify({ event: "command", func: "pauseVideo", args: [] }),
+              JSON.stringify({
+                event: "command",
+                func: "pauseVideo",
+                args: [],
+              }),
               "*",
             );
           } catch (e) {
@@ -235,8 +241,7 @@
         // Pick the best available thumbnail URL for a video.
         function thumbUrl(video) {
           var t = video.thumbnails || {};
-          var best =
-            t.maxres || t.standard || t.high || t.medium || t.default;
+          var best = t.maxres || t.standard || t.high || t.medium || t.default;
           return best && best.url
             ? best.url
             : "https://i.ytimg.com/vi/" +

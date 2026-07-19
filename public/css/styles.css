@@ -10,6 +10,10 @@
   margin-bottom: 0;
 }
 
+.text-center {
+  text-align: center;
+}
+
 :root {
   --indigo: #1b1240;
   --magenta: #6d1f4a;
@@ -622,10 +626,10 @@ main {
 }
 
 .event {
-  border-top: 1px solid white;
+  border-top: 1px solid var(--card-border);
   padding: 2rem 0;
 }
 
 .event_last {
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid var(--card-border);
 }
