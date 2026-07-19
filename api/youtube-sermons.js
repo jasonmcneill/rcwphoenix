@@ -72,9 +72,21 @@ function sermonDate(sermon) {
 // Fetch every video in the playlist via the YouTube Data API and return them
 // sorted in reverse chronological order (newest first).
 async function fetchAllSermons(apiKey) {
-  const items = (await fetchAllPlaylistItems(apiKey)).filter(
-    (item) => item.status?.privacyStatus !== "private",
-  );
+  const items = (await fetchAllPlaylistItems(apiKey)).filter((item) => {
+    // status.privacyStatus reflects the playlist item's own visibility and
+    // does not reliably flip when a video already in the playlist is later
+    // made private. When that happens, YouTube instead replaces the item's
+    // snippet with a fixed placeholder ("Private video" / "This video is
+    // private."), so check for that too.
+    if (item.status?.privacyStatus === "private") return false;
+    if (
+      item.snippet?.title === "Private video" &&
+      item.snippet?.description === "This video is private."
+    ) {
+      return false;
+    }
+    return true;
+  });
   if (!items.length) return [];
 
   const publishedAt = (item) =>
