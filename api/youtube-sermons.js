@@ -72,7 +72,9 @@ function sermonDate(sermon) {
 // Fetch every video in the playlist via the YouTube Data API and return them
 // sorted in reverse chronological order (newest first).
 async function fetchAllSermons(apiKey) {
-  const items = await fetchAllPlaylistItems(apiKey);
+  const items = (await fetchAllPlaylistItems(apiKey)).filter(
+    (item) => item.status?.privacyStatus !== "private",
+  );
   if (!items.length) return [];
 
   const publishedAt = (item) =>
@@ -132,7 +134,7 @@ async function fetchAllPlaylistItems(apiKey) {
   // items, but 40 pages (2,000 items) is far more than this church will have.
   for (let page = 0; page < 40; page++) {
     const url = new URL("https://www.googleapis.com/youtube/v3/playlistItems");
-    url.searchParams.set("part", "snippet,contentDetails");
+    url.searchParams.set("part", "snippet,contentDetails,status");
     url.searchParams.set("playlistId", PLAYLIST_ID);
     url.searchParams.set("maxResults", "50");
     if (pageToken) url.searchParams.set("pageToken", pageToken);
