@@ -625,9 +625,18 @@ main {
   margin-top: 0;
 }
 
+.event p {
+  line-height: 1.8;
+}
+
 .event {
   border-top: 1px solid var(--card-border);
+  line-height: 2.8rem;
   padding: 2rem 0;
+}
+
+.event h3 {
+  line-height: 100%;
 }
 
 .event_last {
