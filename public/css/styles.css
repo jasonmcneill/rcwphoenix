@@ -26,6 +26,10 @@
   margin-bottom: 3rem;
 }
 
+.pb-0 {
+  padding-bottom: 0;
+}
+
 .text-center {
   text-align: center;
 }
