@@ -409,6 +409,9 @@
               data && data.ok && Array.isArray(data.sermons)
                 ? data.sermons
                 : [];
+            sermons = sermons.filter(
+              (sermon) => sermon.title !== "Deleted video",
+            );
             var latest = sermons[0];
             if (!latest || !latest.videoId) {
               throw new Error("No video in response");
