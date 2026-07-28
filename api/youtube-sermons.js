@@ -85,6 +85,14 @@ async function fetchAllSermons(apiKey) {
     ) {
       return false;
     }
+    // A video deleted by its owner isn't flagged via privacyStatus either;
+    // YouTube instead replaces the item's snippet with this placeholder.
+    if (
+      item.snippet?.title === "Deleted video" &&
+      item.snippet?.description === "This video is unavailable."
+    ) {
+      return false;
+    }
     return true;
   });
   if (!items.length) return [];
