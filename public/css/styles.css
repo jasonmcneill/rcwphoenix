@@ -518,7 +518,8 @@ main {
   border-top: 1px solid var(--card-border);
   padding-top: 1.75rem;
 }
-.previous-sermons-title {
+.previous-sermons-title,
+.midweeks-title {
   font-family: "Cinzel", serif;
   font-weight: 700;
   font-size: 1.25rem;

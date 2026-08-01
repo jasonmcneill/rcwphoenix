@@ -32,7 +32,8 @@ app.use(
 );
 
 app.get("/contact.html", (req, res) => res.redirect(301, "/contact/"));
-app.get("/videos.html", (req, res) => res.redirect(301, "/videos/"));
+app.get("/videos.html", (req, res) => res.redirect(301, "/sermons/"));
+app.get("/videos/", (req, res) => res.redirect(301, "/sermons/"));
 
 app.use("/api/contact", contactRouter);
 app.use("/api/youtube-sermons", youtubeRouter);
