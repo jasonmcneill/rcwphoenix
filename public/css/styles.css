@@ -131,7 +131,7 @@ img.full {
 .site-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 1.1rem 1.75rem;
   gap: 1rem;
 }
@@ -157,6 +157,7 @@ img.full {
 .site-nav {
   display: flex;
   gap: 1.5rem;
+  justify-content: center;
 }
 .site-nav a {
   color: var(--ink);
