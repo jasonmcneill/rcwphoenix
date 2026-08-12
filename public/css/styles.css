@@ -95,6 +95,15 @@ body {
   background-color: transparent;
 }
 
+img.responsive {
+  max-width: 100%;
+}
+
+img.full {
+  height: auto;
+  width: 100%;
+}
+
 .bg {
   position: fixed;
   inset: 0;
