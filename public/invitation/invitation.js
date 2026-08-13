@@ -140,6 +140,7 @@
 
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
+        card.removeAttribute("hidden");
         greeting.classList.add("show");
       });
     });
