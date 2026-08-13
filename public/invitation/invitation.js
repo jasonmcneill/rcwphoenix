@@ -141,6 +141,7 @@
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         card.removeAttribute("hidden");
+        card.scrollIntoView({ behavior: "smooth" });
         greeting.classList.add("show");
       });
     });
