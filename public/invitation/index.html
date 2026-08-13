@@ -37,6 +37,10 @@
       href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="/assets/bootstrap-5.0.2-dist/css/bootstrap-utilities.min.css"
+    />
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/invitation/invitation.css" />
   </head>
@@ -72,6 +76,44 @@
           Pick an event below that works for you, and bring a friend. We would
           love to meet you.
         </p>
+
+        <div class="event">
+          <button
+            class="event-header"
+            aria-expanded="false"
+            aria-controls="biblestudy-panel"
+            type="button"
+          >
+            <h3>Personal Bible Study</h3>
+            <span class="event-toggle" aria-hidden="true">
+              <svg
+                width="12"
+                height="8"
+                viewBox="0 0 12 8"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M1 1.5L6 6.5L11 1.5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <div class="event-panel" id="biblestudy-panel" hidden>
+            <p class="wrapBalanced mb-4">
+              Let's get your life on track with God. Set aside an hour or so to
+              meet with someone for a personalized Bible study.
+            </p>
+            <p>
+              Just <a href="../contact/">contact us</a> with a time and place
+              that work for you.
+            </p>
+          </div>
+        </div>
 
         <div class="event">
           <button
@@ -207,12 +249,7 @@
         </div>
 
         <div style="margin: 3rem 0 1rem">
-          <a
-            class="btn primary"
-            id="rsvp-link"
-            href="https://phoenixrcw.org/contact/"
-            >RSVP</a
-          >
+          <a class="btn primary" id="rsvp-link" href="contact/">RSVP</a>
         </div>
       </div>
 
