@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
     headshotUrl: "https://mockmind-api.uifaces.co/content/human/80.jpg",
     name: "John Smith",
     message:
-      "Hi, it's John Smith. I just invited you to one of the events above. I thought I would introduce myself.",
+      "Hi, it's John Smith. I just invited you to one of the events listed above. I thought I would introduce myself.",
     youtubeId: "dQw4w9WgXcQ",
   });
 });
