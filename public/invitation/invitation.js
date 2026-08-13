@@ -102,7 +102,7 @@
     text.className = "greeting-text";
 
     var nameEl = document.createElement("p");
-    nameEl.className = "greeting-name";
+    nameEl.className = "greeting-name wrapBalanced";
     nameEl.textContent = "Invited by " + data.name;
     text.appendChild(nameEl);
 
