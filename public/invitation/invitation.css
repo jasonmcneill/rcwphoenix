@@ -1,0 +1,174 @@
+/* Invitation page additions, built on top of /css/styles.css */
+
+/* --- Hero layout: stack cards vertically, hero-card always on top --- */
+main.hero {
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+#hero-card {
+  order: -1;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Event accordion --- */
+.event-header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font: inherit;
+  color: var(--cream);
+  cursor: pointer;
+  text-align: center;
+}
+.event-header:hover,
+.event-header:focus-visible {
+  color: var(--gold);
+  outline: none;
+}
+.event-header h3 {
+  margin: 0;
+  line-height: 1.4;
+}
+.event-toggle {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 244, 230, 0.08);
+  color: var(--gold);
+  transition:
+    transform 0.2s,
+    background 0.2s;
+  flex-shrink: 0;
+}
+.event-header[aria-expanded="true"] .event-toggle {
+  transform: rotate(180deg);
+  background: rgba(255, 195, 107, 0.15);
+}
+.event-panel {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.3s ease,
+    padding 0.35s ease;
+  padding: 0 0.5rem;
+}
+.event-panel.open {
+  max-height: 300px;
+  opacity: 1;
+  padding: 1.25rem 0.5rem 0.5rem;
+}
+.event-panel p {
+  margin: 0;
+  line-height: 1.7;
+  color: var(--ink);
+  font-size: 0.98rem;
+}
+.event-panel .map-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+.event-panel .map-link:hover,
+.event-panel .map-link:focus-visible {
+  border-bottom-color: var(--gold);
+  outline: none;
+}
+.event-panel .map-link svg {
+  vertical-align: middle;
+  margin-right: 0.35rem;
+}
+
+/* --- Greeting block --- */
+.greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0 0 1.5rem;
+  padding: 1.25rem 1rem;
+  border-radius: 14px;
+  background: rgba(255, 244, 230, 0.07);
+  border: 1px solid var(--card-border);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+.greeting.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.greeting-headshot {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+.greeting-text {
+  text-align: center;
+}
+.greeting-name {
+  margin: 0;
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--cream);
+}
+.greeting-message {
+  margin: 0.4rem 0 0;
+  font-size: 0.95rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+/* --- Video embed --- */
+.greeting-video {
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 16 / 9;
+  margin-top: 0.35rem;
+}
+.greeting-video iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 10px;
+}
+
+/* --- Reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  .event-panel,
+  .greeting,
+  .event-toggle {
+    transition: none;
+  }
+}
+
+/* --- Mobile spacing --- */
+@media (max-width: 480px) {
+  .card {
+    padding: 2rem 1.25rem;
+  }
+  .event {
+    padding: 1.5rem 0;
+  }
+}

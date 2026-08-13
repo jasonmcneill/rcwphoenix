@@ -3,6 +3,7 @@ require("dotenv").config({ path: path.join(__dirname, ".env") });
 const express = require("express");
 const contactRouter = require("./api/contact");
 const youtubeRouter = require("./api/youtube-sermons");
+const invitationRouter = require("./api/invitation");
 const app = express();
 const port = 3003;
 
@@ -37,5 +38,6 @@ app.get("/videos/", (req, res) => res.redirect(301, "/sermons/"));
 
 app.use("/api/contact", contactRouter);
 app.use("/api/youtube-sermons", youtubeRouter);
+app.use("/api/invitation", invitationRouter);
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
