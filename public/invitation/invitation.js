@@ -61,7 +61,7 @@
       navigator
         .share({
           title: document.title,
-          text: "You're invited to join us at the Phoenix Restored Church Worldwide. Choose a Sunday Service, Bible Talk, or Midweek Service that works for you.",
+          text: "You are invited to worship God with the Phoenix Restored Church Worldwide!",
           url: window.location.href,
         })
         .catch(function () {
