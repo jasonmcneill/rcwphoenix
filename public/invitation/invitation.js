@@ -93,6 +93,11 @@
     function renderQrCode() {
       var url = window.location.href;
       var qr = qrcode(0, "M");
+
+      if (window.location.search === "?utm_source=homescreen") {
+        url = window.location.href.replaceAll(window.location.search, "");
+      }
+
       qr.addData(url);
       qr.make();
       codeContainer.innerHTML = qr.createSvgTag({
