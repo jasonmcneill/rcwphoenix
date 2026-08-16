@@ -1,6 +1,10 @@
 (function () {
   "use strict";
 
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault();
+  });
+
   function init() {
     setupAccordion();
     setupRsvpLink();
