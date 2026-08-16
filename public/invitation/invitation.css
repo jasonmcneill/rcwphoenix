@@ -185,7 +185,7 @@ body.has-fab {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.85rem;
+  gap: 1.7rem;
 }
 .fab {
   width: 56px;
@@ -224,7 +224,7 @@ body.has-fab {
   .fab-stack {
     right: calc(1rem + env(safe-area-inset-right, 0px));
     bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-    gap: 0.65rem;
+    gap: 1.3rem;
   }
   .fab {
     width: 50px;
