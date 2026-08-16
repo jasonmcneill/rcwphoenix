@@ -4,6 +4,7 @@
   function init() {
     setupAccordion();
     setupRsvpLink();
+    setupShareButton();
     loadGreeting();
   }
 
@@ -45,6 +46,28 @@
       "href",
       href + separator + "invitedby=" + encodeURIComponent(invitedBy),
     );
+  }
+
+  function setupShareButton() {
+    if (!navigator.share) return;
+
+    var button = document.getElementById("share-button");
+    if (!button) return;
+
+    button.hidden = false;
+    document.body.classList.add("has-share-fab");
+
+    button.addEventListener("click", function () {
+      navigator
+        .share({
+          title: document.title,
+          text: "You're invited to join Phoenix Restored Church Worldwide. Choose a Sunday Service, Bible Talk, or Midweek Service that works for you.",
+          url: window.location.href,
+        })
+        .catch(function () {
+          // User cancelled the share sheet or it failed; no action needed.
+        });
+    });
   }
 
   function loadGreeting() {

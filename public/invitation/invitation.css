@@ -172,3 +172,53 @@ main.hero {
     padding: 1.5rem 0;
   }
 }
+
+/* --- Share FAB --- */
+body.has-share-fab {
+  padding-bottom: 4.5rem;
+}
+.share-fab {
+  position: fixed;
+  right: calc(1.25rem + env(safe-area-inset-right, 0px));
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--orange), var(--gold));
+  color: #2a1505;
+  cursor: pointer;
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.35),
+    0 12px 28px -10px rgba(255, 122, 61, 0.7);
+  transition:
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s;
+}
+.share-fab:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.4),
+    0 16px 32px -8px rgba(255, 122, 61, 0.8);
+}
+.share-fab:active {
+  transform: scale(0.96);
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.35),
+    0 8px 18px -8px rgba(255, 122, 61, 0.7);
+}
+.share-fab[hidden] {
+  display: none;
+}
+@media (max-width: 480px) {
+  .share-fab {
+    width: 50px;
+    height: 50px;
+    right: calc(1rem + env(safe-area-inset-right, 0px));
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
+}
