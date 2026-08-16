@@ -173,15 +173,21 @@ main.hero {
   }
 }
 
-/* --- Share FAB --- */
-body.has-share-fab {
+/* --- Floating action buttons --- */
+body.has-fab {
   padding-bottom: 4.5rem;
 }
-.share-fab {
+.fab-stack {
   position: fixed;
   right: calc(1.25rem + env(safe-area-inset-right, 0px));
   bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
   z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+.fab {
   width: 56px;
   height: 56px;
   border: none;
@@ -199,26 +205,125 @@ body.has-share-fab {
     transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.2s;
 }
-.share-fab:hover {
+.fab:hover {
   transform: translateY(-2px) scale(1.04);
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.4),
     0 16px 32px -8px rgba(255, 122, 61, 0.8);
 }
-.share-fab:active {
+.fab:active {
   transform: scale(0.96);
   box-shadow:
     0 4px 10px rgba(0, 0, 0, 0.35),
     0 8px 18px -8px rgba(255, 122, 61, 0.7);
 }
-.share-fab[hidden] {
+.fab[hidden] {
   display: none;
 }
 @media (max-width: 480px) {
-  .share-fab {
-    width: 50px;
-    height: 50px;
+  .fab-stack {
     right: calc(1rem + env(safe-area-inset-right, 0px));
     bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    gap: 0.65rem;
+  }
+  .fab {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* --- QR modal --- */
+.qr-modal[hidden] {
+  display: none;
+}
+.qr-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.qr-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 6, 20, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.qr-modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 2rem 1.5rem 1.75rem;
+  box-shadow:
+    0 30px 80px -20px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  text-align: center;
+  animation: qr-modal-in 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes qr-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.qr-modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--card-border);
+  border-radius: 50%;
+  background: rgba(255, 244, 230, 0.08);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.qr-modal-close:hover,
+.qr-modal-close:focus-visible {
+  background: rgba(255, 195, 107, 0.18);
+  color: var(--gold);
+  outline: none;
+}
+.qr-modal-dialog h2 {
+  margin: 0 0 1.25rem;
+  font-size: 1.05rem;
+  color: var(--cream);
+}
+.qr-modal-code {
+  background: #fff;
+  border-radius: 12px;
+  padding: 0.9rem;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+}
+.qr-modal-code svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.qr-modal-url {
+  margin: 1rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  word-break: break-all;
+}
+@media (prefers-reduced-motion: reduce) {
+  .qr-modal-dialog {
+    animation: none;
   }
 }

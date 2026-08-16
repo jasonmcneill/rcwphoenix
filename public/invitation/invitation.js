@@ -9,6 +9,7 @@
     setupAccordion();
     setupRsvpLink();
     setupShareButton();
+    setupQrButton();
     loadGreeting();
   }
 
@@ -59,7 +60,7 @@
     if (!button) return;
 
     button.hidden = false;
-    document.body.classList.add("has-share-fab");
+    document.body.classList.add("has-fab");
 
     button.addEventListener("click", function () {
       navigator
@@ -72,6 +73,61 @@
           // User cancelled the share sheet or it failed; no action needed.
         });
     });
+  }
+
+  function setupQrButton() {
+    if (typeof qrcode !== "function") return;
+
+    var button = document.getElementById("qr-button");
+    var modal = document.getElementById("qr-modal");
+    var backdrop = document.getElementById("qr-modal-backdrop");
+    var closeButton = document.getElementById("qr-modal-close");
+    var codeContainer = document.getElementById("qr-code-container");
+    var urlLabel = document.getElementById("qr-modal-url");
+    if (!button || !modal || !backdrop || !closeButton || !codeContainer) {
+      return;
+    }
+
+    var lastFocused = null;
+
+    function renderQrCode() {
+      var url = window.location.href;
+      var qr = qrcode(0, "M");
+      qr.addData(url);
+      qr.make();
+      codeContainer.innerHTML = qr.createSvgTag({
+        scalable: true,
+        margin: 16,
+      });
+      if (urlLabel) urlLabel.textContent = url;
+    }
+
+    function onKeydown(e) {
+      if (e.key === "Escape") closeModal();
+    }
+
+    function openModal() {
+      renderQrCode();
+      lastFocused = document.activeElement;
+      modal.hidden = false;
+      document.addEventListener("keydown", onKeydown);
+      closeButton.focus();
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+      document.removeEventListener("keydown", onKeydown);
+      if (lastFocused && typeof lastFocused.focus === "function") {
+        lastFocused.focus();
+      }
+    }
+
+    button.addEventListener("click", openModal);
+    closeButton.addEventListener("click", closeModal);
+    backdrop.addEventListener("click", closeModal);
+
+    button.hidden = false;
+    document.body.classList.add("has-fab");
   }
 
   function loadGreeting() {

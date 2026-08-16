@@ -333,31 +333,134 @@
       <p>&copy; Phoenix Restored Church Worldwide. All rights reserved.</p>
     </footer>
 
-    <button
-      class="share-fab"
-      id="share-button"
-      type="button"
-      hidden
-      aria-label="Share"
-      title="Share"
-    >
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
+    <div class="fab-stack">
+      <button
+        class="fab"
+        id="qr-button"
+        type="button"
+        hidden
+        aria-label="Show QR code"
+        title="Show QR code"
       >
-        <path d="M12 16V4" />
-        <path d="M7 8l5-5 5 5" />
-        <path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" />
-      </svg>
-    </button>
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect
+            x="5.5"
+            y="5.5"
+            width="2"
+            height="2"
+            fill="currentColor"
+            stroke="none"
+          />
+          <rect
+            x="16.5"
+            y="5.5"
+            width="2"
+            height="2"
+            fill="currentColor"
+            stroke="none"
+          />
+          <rect
+            x="5.5"
+            y="16.5"
+            width="2"
+            height="2"
+            fill="currentColor"
+            stroke="none"
+          />
+          <rect
+            x="14"
+            y="14"
+            width="3"
+            height="3"
+            fill="currentColor"
+            stroke="none"
+          />
+          <rect
+            x="18"
+            y="18"
+            width="3"
+            height="3"
+            fill="currentColor"
+            stroke="none"
+          />
+        </svg>
+      </button>
 
+      <button
+        class="fab"
+        id="share-button"
+        type="button"
+        hidden
+        aria-label="Share"
+        title="Share"
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 16V4" />
+          <path d="M7 8l5-5 5 5" />
+          <path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="qr-modal" id="qr-modal" hidden>
+      <div class="qr-modal-backdrop" id="qr-modal-backdrop"></div>
+      <div
+        class="qr-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="qr-modal-title"
+      >
+        <button
+          class="qr-modal-close"
+          id="qr-modal-close"
+          type="button"
+          aria-label="Close"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M18 6 6 18" />
+            <path d="M6 6l12 12" />
+          </svg>
+        </button>
+        <h2 id="qr-modal-title">Scan to open invitation</h2>
+        <div class="qr-modal-code" id="qr-code-container"></div>
+        <p class="qr-modal-url" id="qr-modal-url"></p>
+      </div>
+    </div>
+
+    <script src="/assets/qrcode-generator/qrcode.js"></script>
     <script src="/invitation/invitation.js"></script>
   </body>
 </html>
