@@ -61,7 +61,7 @@
       navigator
         .share({
           title: document.title,
-          text: "You are invited to worship God with the Phoenix Restored Church Worldwide!",
+          text: "You are invited to an event of the Phoenix Restored Church Worldwide!",
           url: window.location.href,
         })
         .catch(function () {
