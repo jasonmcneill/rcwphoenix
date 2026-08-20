@@ -2,7 +2,7 @@
   "name": "Invitation",
   "short_name": "Invitation",
   "description": "Invitation to the events of the Phoenix Restored Church Worldwide",
-  "start_url": "/invitation/?utm_source=homescreen",
+  "start_url": "/invitation/",
   "scope": "/",
   "display": "standalone",
   "theme_color": "#1b1240",
