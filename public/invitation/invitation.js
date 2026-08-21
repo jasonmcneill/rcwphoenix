@@ -33,9 +33,6 @@
     if (!panel) return;
 
     var expanded = header.getAttribute("aria-expanded") === "true";
-    if (expanded) {
-      document.body.click();
-    }
     header.setAttribute("aria-expanded", String(!expanded));
     panel.hidden = expanded;
     panel.classList.toggle("open", !expanded);
