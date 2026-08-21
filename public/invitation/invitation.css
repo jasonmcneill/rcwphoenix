@@ -54,6 +54,9 @@ main.hero {
 .event-header[aria-expanded="false"] .event-toggle {
   color: var(--cream);
 }
+.event-header[aria-expanded="true"] h3 {
+  color: var(--gold);
+}
 .event-header[aria-expanded="true"] .event-toggle {
   transform: rotate(180deg);
   background: rgba(255, 195, 107, 0.15);
