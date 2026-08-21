@@ -51,9 +51,13 @@ main.hero {
     background 0.2s;
   flex-shrink: 0;
 }
+.event-header[aria-expanded="false"] .event-toggle {
+  color: var(--cream);
+}
 .event-header[aria-expanded="true"] .event-toggle {
   transform: rotate(180deg);
   background: rgba(255, 195, 107, 0.15);
+  color: var(--gold);
 }
 .event-panel {
   overflow: hidden;
