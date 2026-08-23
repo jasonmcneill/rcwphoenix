@@ -1,0 +1,11 @@
+<%- include("../index") %>
+
+<script type="text/javascript">
+  (() => {
+    const path = window.location.pathname;
+    const segments = path.split("/");
+    const sender = segments.pop() || segments.pop();
+
+    if (sender) alert(`Sender is "${sender}"`);
+  })();
+</script>

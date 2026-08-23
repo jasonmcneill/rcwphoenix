@@ -7,6 +7,9 @@ const invitationRouter = require("./api/invitation");
 const app = express();
 const port = 3003;
 
+app.set("views", path.join(__dirname, "public"));
+app.set("view engine", "ejs");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -35,6 +38,11 @@ app.use(
 app.get("/contact.html", (req, res) => res.redirect(301, "/contact/"));
 app.get("/videos.html", (req, res) => res.redirect(301, "/sermons/"));
 app.get("/videos/", (req, res) => res.redirect(301, "/sermons/"));
+
+app.get("/invitation/", (req, res) => res.render("invitation/index"));
+app.get("/invitation/:sender", (req, res) =>
+  res.render("invitation/sender/index"),
+);
 
 app.use("/api/contact", contactRouter);
 app.use("/api/youtube-sermons", youtubeRouter);

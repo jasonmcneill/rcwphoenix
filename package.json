@@ -22,6 +22,7 @@
   "homepage": "https://github.com/jasonmcneill/rcwphoenix#readme",
   "dependencies": {
     "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
     "express": "^5.2.1",
     "mysql2": "^3.23.3",
     "node-mailjet": "^6.0.11"
