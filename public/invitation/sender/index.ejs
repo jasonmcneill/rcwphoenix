@@ -6,6 +6,8 @@
     const segments = path.split("/");
     const sender = segments.pop() || segments.pop();
 
-    if (sender) alert(`Sender is "${sender}"`);
+    if (!sender) return;
+
+    console.log(`Sender is "${sender}"`);
   })();
 </script>
