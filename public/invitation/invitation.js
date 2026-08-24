@@ -17,10 +17,14 @@
   function registerServiceWorker() {
     if (!("serviceWorker" in navigator)) return;
 
-    window.addEventListener("load", function () {
-      navigator.serviceWorker.register("/invitation/sw.js").catch(function () {
-        // Registration failures shouldn't block the page.
-      });
+    // Register as soon as this script runs rather than waiting for the
+    // window "load" event: this script already sits at the end of <body>,
+    // so the DOM is ready, and "load" would otherwise wait on every image
+    // and font on the page — delaying (or in a network-restricted
+    // environment, such as some PWA-analysis scanners, potentially
+    // preventing) service worker detection.
+    navigator.serviceWorker.register("/invitation/sw.js").catch(function () {
+      // Registration failures shouldn't block the page.
     });
   }
 
