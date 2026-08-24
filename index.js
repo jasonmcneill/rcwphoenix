@@ -39,10 +39,17 @@ app.get("/contact.html", (req, res) => res.redirect(301, "/contact/"));
 app.get("/videos.html", (req, res) => res.redirect(301, "/sermons/"));
 app.get("/videos/", (req, res) => res.redirect(301, "/sermons/"));
 
-app.get("/invitation/", (req, res) => res.render("invitation/index"));
-app.get("/invitation/:sender", (req, res) =>
-  res.render("invitation/sender/index"),
-);
+// Event times/dates/locations live here and must never be served stale,
+// so bypass HTTP caching entirely and let the service worker's
+// NetworkFirst strategy be the only layer deciding freshness.
+app.get("/invitation/", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.render("invitation/index");
+});
+app.get("/invitation/:sender", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.render("invitation/sender/index");
+});
 
 app.use("/api/contact", contactRouter);
 app.use("/api/youtube-sermons", youtubeRouter);

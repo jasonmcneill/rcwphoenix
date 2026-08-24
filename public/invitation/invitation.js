@@ -6,11 +6,22 @@
   });
 
   function init() {
+    registerServiceWorker();
     setupAccordion();
     setupRsvpLink();
     setupShareButton();
     setupQrButton();
     loadGreeting();
+  }
+
+  function registerServiceWorker() {
+    if (!("serviceWorker" in navigator)) return;
+
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("/invitation/sw.js").catch(function () {
+        // Registration failures shouldn't block the page.
+      });
+    });
   }
 
   function setupAccordion() {

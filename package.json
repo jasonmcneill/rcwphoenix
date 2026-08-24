@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "build:invitation": "workbox generateSW workbox-config.invitation.js",
     "ssh:prod": "ssh root@172.236.250.102 -i ~/.ssh/usd21/id_rsa",
     "deploy:prod": "npm run ssh:prod ./pull-rcwphoenix.sh"
   },
@@ -28,6 +29,7 @@
     "node-mailjet": "^6.0.11"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "workbox-cli": "^7.4.1"
   }
 }
