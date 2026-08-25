@@ -73,7 +73,6 @@ main.hero {
   padding: 0 0.5rem;
 }
 .event-panel.open {
-  max-height: 600px;
   opacity: 1;
   padding: 1.25rem 0.5rem 0.5rem;
 }
