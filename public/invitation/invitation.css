@@ -79,7 +79,6 @@ main.hero {
 }
 .event-panel p {
   margin: 0;
-  line-height: 1.7;
   color: var(--ink);
   font-size: 0.98rem;
 }
@@ -331,4 +330,8 @@ body.has-fab {
   .qr-modal-dialog {
     animation: none;
   }
+}
+
+.event details {
+  line-height: 2rem;
 }
