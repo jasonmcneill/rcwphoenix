@@ -21,6 +21,16 @@ module.exports = {
     "assets/logo-desert.avif",
   ],
   swDest: "public/invitation/sw.js",
+  // Precache URLs are resolved by the browser relative to sw.js's own
+  // location (public/invitation/), not to globDirectory ("public"), so
+  // paths built from globDirectory need rewriting to match: strip the
+  // "invitation/" prefix for files already alongside sw.js, and add "../"
+  // for shared assets one directory up.
+  modifyURLPrefix: {
+    "invitation/": "",
+    "css/": "../css/",
+    "assets/": "../assets/",
+  },
   // Bundle the Workbox runtime into sw.js itself instead of emitting a
   // separately-hashed workbox-<hash>.js alongside it — otherwise every
   // Workbox version bump leaves the previous hashed file orphaned on disk.
