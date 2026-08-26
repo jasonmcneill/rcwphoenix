@@ -333,5 +333,6 @@ body.has-fab {
 }
 
 .event details {
+  cursor: pointer;
   line-height: 2rem;
 }
