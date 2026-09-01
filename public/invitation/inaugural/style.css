@@ -91,9 +91,10 @@ img {
 }
 
 .brand img {
-  width: clamp(56px, 9vw, 82px);
+  width: clamp(150px, 9vw, 171px);
   height: auto;
   border-radius: 50%;
+  box-shadow: 0 6px 24px rgba(15, 24, 38, 0.18);
 }
 
 .brand span {
