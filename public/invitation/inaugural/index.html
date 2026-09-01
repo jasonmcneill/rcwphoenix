@@ -1,11 +1,748 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Test</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inaugural Sunday Service — Sep 13 | Phoenix Restored Church</title>
+    <meta
+      name="description"
+      content="Join Phoenix Restored Church Worldwide for our inaugural Sunday service — 10 AM, September 13, 2026 at the Omni Tempe Hotel at ASU. Child care provided and parking validation."
+    />
+    <meta
+      property="og:title"
+      content="Inaugural Sunday Service — Sep 13, 10 AM"
+    />
+    <meta
+      property="og:description"
+      content="Phoenix Restored Church Worldwide's first Sunday service. Omni Tempe Hotel at ASU. Child care provided."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://phoenixrcw.org/invitation/inaugural/invite.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:image"
+      content="https://phoenixrcw.org/invitation/inaugural/invite.jpg"
+    />
+    <link rel="icon" href="/assets/logo-desert.jpeg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/css/intlTelInput.css"
+    />
+    <style>
+      :root {
+        --steel: #6d9dc0;
+        --steel-deep: #3f6e94;
+        --navy: #2c4f6b;
+        --ink: #2f3437;
+        --paper: #f2f3f4;
+        --paper-2: #e4e7e9;
+        --white: #ffffff;
+        --radius: 4px;
+        --shadow: 0 18px 45px -22px rgba(44, 79, 107, 0.55);
+        --font: "Poppins", "Helvetica Neue", Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font);
+        color: var(--ink);
+        background: var(--paper);
+        font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+        line-height: 1.6;
+        font-weight: 300;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .wrap {
+        width: min(1120px, 100% - 2.5rem);
+        margin-inline: auto;
+      }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        background: var(--paper);
+        color: var(--ink);
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0 0 0 auto;
+        width: 48%;
+        background: linear-gradient(
+          160deg,
+          var(--steel) 0%,
+          var(--steel-deep) 100%
+        );
+        clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
+        opacity: 0.95;
+      }
+
+      @media (max-width: 780px) {
+        .hero::after {
+          inset: auto 0 0 0;
+          width: 100%;
+          height: 26%;
+          clip-path: polygon(0 22%, 100% 0, 100% 100%, 0 100%);
+        }
+      }
+
+      .hero-inner {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        gap: 2rem;
+        align-items: center;
+        padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(2.5rem, 6vw, 5rem);
+      }
+
+      @media (max-width: 780px) {
+        .hero-inner {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: clamp(1.5rem, 4vw, 2.75rem);
+      }
+
+      .brand img {
+        width: clamp(56px, 9vw, 82px);
+        height: auto;
+        border-radius: 50%;
+      }
+
+      .brand span {
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: var(--navy);
+        line-height: 1.35;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        border: 2px solid var(--ink);
+        padding: 0.45rem 1.1rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-size: clamp(1rem, 0.85rem + 0.9vw, 1.6rem);
+      }
+
+      .badge::before {
+        content: "";
+        width: 0.85em;
+        height: 0.85em;
+        background: linear-gradient(
+          135deg,
+          var(--steel-deep) 50%,
+          transparent 50%
+        );
+        border: 2px solid var(--steel-deep);
+      }
+
+      .when {
+        margin: 1.4rem 0 1.8rem;
+        font-weight: 700;
+        color: var(--navy);
+        line-height: 0.95;
+        font-size: clamp(2.6rem, 1.4rem + 6vw, 4.75rem);
+        letter-spacing: -0.02em;
+      }
+
+      .when .time {
+        font-size: 0.55em;
+      }
+
+      .when .time small {
+        font-size: 0.62em;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+
+      .where {
+        font-size: 1rem;
+      }
+
+      .where strong {
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 700;
+        font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+        color: var(--ink);
+      }
+
+      .where a {
+        color: var(--steel-deep);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(63, 110, 148, 0.4);
+      }
+
+      .where a:hover {
+        border-bottom-color: var(--steel-deep);
+      }
+
+      .service-type {
+        text-transform: uppercase;
+        font-weight: 800;
+        line-height: 0.84;
+        letter-spacing: -0.03em;
+        font-size: clamp(4rem, 2rem + 12vw, 9.5rem);
+        color: var(--navy);
+        margin: 0;
+      }
+
+      .service-type span {
+        display: block;
+      }
+
+      .service-type span:last-child {
+        color: var(--white);
+        text-shadow: 0 2px 24px rgba(44, 79, 107, 0.25);
+      }
+
+      @media (max-width: 780px) {
+        .service-type {
+          font-size: clamp(3.4rem, 14vw, 6rem);
+          margin-top: 0.5rem;
+        }
+        .service-type span:last-child {
+          color: var(--white);
+        }
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 2rem;
+      }
+
+      .btn {
+        font-family: var(--font);
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 0.85rem 1.9rem;
+        border-radius: var(--radius);
+        border: 2px solid var(--steel-deep);
+        background: var(--steel-deep);
+        color: var(--white);
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          background 0.2s ease,
+          color 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn:hover {
+        background: var(--navy);
+        border-color: var(--navy);
+        transform: translateY(-1px);
+      }
+
+      .btn.ghost {
+        background: transparent;
+        color: var(--navy);
+      }
+
+      .btn.ghost:hover {
+        background: var(--navy);
+        color: var(--white);
+      }
+
+      /* ---------- Sections ---------- */
+      section.band {
+        padding: clamp(2.5rem, 6vw, 4.5rem) 0;
+      }
+
+      .band.light {
+        background: var(--white);
+      }
+
+      .band.tint {
+        background: linear-gradient(
+          160deg,
+          var(--steel) 0%,
+          var(--steel-deep) 100%
+        );
+        color: var(--white);
+      }
+
+      h2 {
+        text-transform: uppercase;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.6rem);
+        margin: 0 0 1.25rem;
+        line-height: 1.05;
+      }
+
+      .scripture {
+        max-width: 46ch;
+        font-size: clamp(1.05rem, 1rem + 0.5vw, 1.4rem);
+        font-weight: 300;
+      }
+
+      .scripture cite {
+        display: block;
+        margin-top: 0.75rem;
+        font-style: normal;
+        font-size: 0.8em;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-weight: 600;
+        opacity: 0.85;
+      }
+
+      /* ---------- Video ---------- */
+      .video-shell {
+        width: 100%;
+        max-width: 880px;
+        margin-inline: auto;
+      }
+
+      .video-frame {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: var(--navy);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .video-frame iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      /* ---------- Perks ---------- */
+      .perks {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .perk {
+        background: var(--paper-2);
+        color: var(--navy);
+        padding: 1.25rem 1.4rem;
+        border-radius: var(--radius);
+        text-align: center;
+      }
+
+      .band.tint .perk {
+        background: rgba(255, 255, 255, 0.92);
+      }
+
+      .perk strong {
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+        font-size: clamp(1rem, 0.9rem + 0.5vw, 1.2rem);
+      }
+
+      .perk span {
+        font-size: 0.9rem;
+      }
+
+      /* ---------- Footer ---------- */
+      .site-footer {
+        background: var(--navy);
+        color: rgba(255, 255, 255, 0.85);
+        text-align: center;
+        padding: 2.5rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .site-footer a {
+        color: var(--white);
+        text-decoration: none;
+        margin: 0 0.6rem;
+      }
+
+      .site-footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* ---------- Dialog / form ---------- */
+      dialog.rsvp {
+        border: none;
+        padding: 0;
+        border-radius: 8px;
+        width: min(560px, calc(100vw - 2rem));
+        max-height: calc(100dvh - 2rem);
+        background: var(--white);
+        color: var(--ink);
+        box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.6);
+      }
+
+      dialog.rsvp::backdrop {
+        background: rgba(44, 79, 107, 0.55);
+        backdrop-filter: blur(3px);
+      }
+
+      .rsvp-head {
+        background: linear-gradient(
+          135deg,
+          var(--steel) 0%,
+          var(--steel-deep) 100%
+        );
+        color: var(--white);
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .rsvp-head h2 {
+        margin: 0;
+        font-size: 1.35rem;
+      }
+
+      .rsvp-head p {
+        margin: 0.25rem 0 0;
+        font-size: 0.9rem;
+        opacity: 0.9;
+      }
+
+      .close-x {
+        background: transparent;
+        border: 0;
+        color: var(--white);
+        font-size: 1.6rem;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0 0.25rem;
+      }
+
+      .rsvp-body {
+        padding: 1.25rem 1.5rem 1.5rem;
+        overflow-y: auto;
+        max-height: calc(100dvh - 12rem);
+      }
+
+      .field {
+        margin-bottom: 1rem;
+      }
+
+      .field label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 0.35rem;
+        color: var(--navy);
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        font-family: var(--font);
+        font-size: 1rem;
+        padding: 0.7rem 0.8rem;
+        border: 1px solid #c8d1d8;
+        border-radius: var(--radius);
+        background: var(--white);
+        color: var(--ink);
+      }
+
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        outline: 2px solid var(--steel);
+        outline-offset: 1px;
+        border-color: var(--steel);
+      }
+
+      .field input.invalid,
+      .field select.invalid {
+        border-color: #b3261e;
+      }
+
+      .error {
+        display: block;
+        color: #b3261e;
+        font-size: 0.82rem;
+        margin-top: 0.3rem;
+      }
+
+      .iti {
+        width: 100%;
+      }
+
+      .form-status {
+        margin: 0.75rem 0 0;
+        font-size: 0.95rem;
+        text-align: center;
+      }
+
+      .form-status.success {
+        color: #1b6b3a;
+      }
+
+      .form-status.error {
+        color: #b3261e;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+        flex-wrap: wrap;
+      }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+    </style>
   </head>
   <body>
-    Test
+    <header class="hero">
+      <div class="wrap hero-inner">
+        <div>
+          <div class="brand">
+            <img
+              src="/assets/logo.png"
+              alt="Restored Church Phoenix logo"
+              width="82"
+              height="82"
+            />
+            <span>Phoenix Restored<br />Church Worldwide</span>
+          </div>
+
+          <p class="badge">Inaugural</p>
+
+          <p class="when">
+            <span class="time">10 <small>AM</small></span><br />
+            SEP 13
+          </p>
+
+          <p class="where">
+            <strong>Omni Tempe Hotel at ASU</strong>
+            <a
+              href="https://maps.google.com/?q=7+E+University+Dr,+Tempe,+AZ+85281"
+              target="_blank"
+              rel="noopener"
+              >7 E University Dr, Tempe, AZ 85281</a
+            >
+          </p>
+
+          <div class="cta-row">
+            <button class="btn" type="button" id="rsvp-open">RSVP now</button>
+            <a class="btn ghost" href="#watch">Watch invite</a>
+          </div>
+        </div>
+
+        <h1 class="service-type">
+          <span>Sunday</span>
+          <span>Service</span>
+        </h1>
+      </div>
+    </header>
+
+    <section class="band light" id="watch">
+      <div class="wrap">
+        <h2>You're invited</h2>
+        <div class="video-shell">
+          <div class="video-frame">
+            <iframe
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              title="Inaugural service invitation video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band tint">
+      <div class="wrap">
+        <h2>Come as you are</h2>
+        <blockquote class="scripture">
+          "Therefore go and make disciples of all nations&hellip;"
+          <cite>Matthew 28:19 NIV</cite>
+        </blockquote>
+
+        <div class="perks">
+          <div class="perk">
+            <strong>Child care</strong>
+            <span>Provided during the service</span>
+          </div>
+          <div class="perk">
+            <strong>Parking validation</strong>
+            <span>$16 validated on site</span>
+          </div>
+          <div class="perk">
+            <strong>Starts at 10 AM</strong>
+            <span>Sunday, September 13, 2026</span>
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <button class="btn ghost" type="button" data-rsvp-open
+            style="border-color:#fff;color:#fff">Save my seat</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>
+        <a href="/">Home</a><a href="/sermons/">Sermons</a
+        ><a href="/contact/">Contact</a>
+      </p>
+      <p>&copy; <span id="year"></span> Restored Church Worldwide</p>
+    </footer>
+
+    <dialog class="rsvp" id="rsvp-dialog" aria-labelledby="rsvp-title">
+      <div class="rsvp-head">
+        <div>
+          <h2 id="rsvp-title">RSVP</h2>
+          <p>Inaugural Sunday Service &mdash; Sep 13, 10 AM</p>
+        </div>
+        <button
+          class="close-x"
+          type="button"
+          id="rsvp-close"
+          aria-label="Close RSVP form"
+        >
+          &times;
+        </button>
+      </div>
+
+      <div class="rsvp-body">
+        <form id="rsvp-form" novalidate>
+          <div class="field">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              autocomplete="name"
+              required
+            />
+            <span class="error" data-error-for="name"></span>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              autocomplete="email"
+              required
+            />
+            <span class="error" data-error-for="email"></span>
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input
+              type="tel"
+              pattern="[0-9]*"
+              id="phone"
+              name="phone"
+              autocomplete="tel"
+            />
+            <span class="error" data-error-for="phone"></span>
+          </div>
+
+          <div class="field">
+            <label for="guests">How many people are you bringing?</label>
+            <select id="guests" name="guests">
+              <option value="0">Just me</option>
+              <option value="1">1 guest</option>
+              <option value="2">2 guests</option>
+              <option value="3">3 guests</option>
+              <option value="4">4 guests</option>
+              <option value="5">5 guests</option>
+              <option value="6">6 guests</option>
+              <option value="7">7 guests</option>
+              <option value="8">8 guests</option>
+              <option value="9">9 guests</option>
+              <option value="10">10 or more guests</option>
+            </select>
+            <span class="error" data-error-for="guests"></span>
+          </div>
+
+          <div class="field">
+            <label for="comments">Questions or comments</label>
+            <textarea id="comments" name="comments" rows="4"></textarea>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn" id="submit-btn">
+              Send RSVP
+            </button>
+          </div>
+          <p
+            class="form-status"
+            id="form-status"
+            role="status"
+            aria-live="polite"
+          ></p>
+        </form>
+      </div>
+    </dialog>
+
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/js/intlTelInput.min.js"></script>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+    <script src="/invitation/inaugural/rsvp.js"></script>
   </body>
 </html>
