@@ -50,19 +50,18 @@ img {
 .hero::after {
   content: "";
   position: absolute;
-  inset: 0 0 0 auto;
-  width: 48%;
+  inset: auto 0 0 0;
+  width: 100%;
+  height: 30%;
   background: linear-gradient(160deg, var(--steel) 0%, var(--steel-deep) 100%);
-  clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
+  clip-path: polygon(0 22%, 100% 0, 100% 100%, 0 100%);
   opacity: 0.95;
 }
 
 @media (max-width: 780px) {
   .hero::after {
-    inset: auto 0 0 0;
-    width: 100%;
-    height: 26%;
-    clip-path: polygon(0 22%, 100% 0, 100% 100%, 0 100%);
+    height: 30%;
+    clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
   }
 }
 
@@ -70,22 +69,17 @@ img {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  gap: 2rem;
-  align-items: center;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 1.5rem;
+  text-align: center;
   padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(2.5rem, 6vw, 5rem);
-}
-
-@media (max-width: 780px) {
-  .hero-inner {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
 }
 
 .brand {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.75rem;
   margin-bottom: clamp(1.5rem, 4vw, 2.75rem);
 }
@@ -132,7 +126,7 @@ img {
   color: var(--navy);
   line-height: 0.92;
   letter-spacing: -0.02em;
-  text-align: right;
+  text-align: center;
 }
 
 .when span {
@@ -161,7 +155,7 @@ img {
 
 .where {
   font-size: 1rem;
-  text-align: right;
+  text-align: center;
 }
 
 .where strong {
@@ -191,6 +185,7 @@ img {
   font-size: clamp(4rem, 2rem + 12vw, 9.5rem);
   color: var(--navy);
   margin: 0;
+  text-align: center;
 }
 
 .service-type span {
@@ -202,19 +197,10 @@ img {
   text-shadow: 0 2px 24px rgba(44, 79, 107, 0.25);
 }
 
-@media (max-width: 780px) {
-  .service-type {
-    font-size: clamp(3.4rem, 14vw, 6rem);
-    margin-top: 0.5rem;
-  }
-  .service-type span:last-child {
-    color: var(--white);
-  }
-}
-
 .cta-row {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.75rem;
   margin-top: 2rem;
 }
@@ -278,8 +264,14 @@ h2 {
   line-height: 1.05;
 }
 
+.band h2 {
+  text-align: center;
+}
+
 .scripture {
   max-width: 46ch;
+  margin-inline: auto;
+  text-align: center;
   font-size: clamp(1.05rem, 1rem + 0.5vw, 1.4rem);
   font-weight: 300;
 }
