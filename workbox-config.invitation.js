@@ -20,6 +20,7 @@ module.exports = {
     "assets/qrcode-generator/qrcode.js",
     "assets/logo-desert.avif",
   ],
+  globIgnores: ["invitation/inaugural/**"],
   swDest: "public/invitation/sw.js",
   // Precache URLs are resolved by the browser relative to sw.js's own
   // location (public/invitation/), not to globDirectory ("public"), so

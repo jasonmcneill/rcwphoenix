@@ -130,13 +130,19 @@ img {
   margin: 1.4rem 0 1.8rem;
   font-weight: 700;
   color: var(--navy);
-  line-height: 0.95;
-  font-size: clamp(2.6rem, 1.4rem + 6vw, 4.75rem);
+  line-height: 0.92;
   letter-spacing: -0.02em;
+  text-align: right;
+}
+
+.when span {
+  display: block;
 }
 
 .when .time {
-  font-size: 0.55em;
+  font-size: clamp(1.6rem, 0.9rem + 3vw, 2.5rem);
+  font-weight: 600;
+  color: var(--ink);
 }
 
 .when .time small {
@@ -145,8 +151,17 @@ img {
   letter-spacing: 0.02em;
 }
 
+.when .month {
+  font-size: clamp(2.8rem, 1.5rem + 6.5vw, 5rem);
+}
+
+.when .day {
+  font-size: clamp(2.8rem, 1.5rem + 6.5vw, 5rem);
+}
+
 .where {
   font-size: 1rem;
+  text-align: right;
 }
 
 .where strong {
