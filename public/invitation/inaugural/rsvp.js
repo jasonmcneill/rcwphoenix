@@ -7,7 +7,7 @@
   var statusEl = document.getElementById("form-status");
   var submitBtn = document.getElementById("submit-btn");
 
-  // Initialize intl-tel-input (US default) â€” same behavior as /contact/
+  // Initialize intl-tel-input (US default) -- same behavior as /contact/
   var iti = window.intlTelInput(phoneInput, {
     initialCountry: "us",
     preferredCountries: ["us", "ca", "mx", "gb"],
@@ -131,7 +131,7 @@
 
     submitBtn.disabled = true;
     var originalText = submitBtn.textContent;
-    submitBtn.textContent = "Sendingâ€¦";
+    submitBtn.textContent = "Sending";
 
     try {
       var res = await fetch("/api/contact", {
@@ -141,13 +141,13 @@
       });
       if (!res.ok) throw new Error("Request failed");
       statusEl.textContent =
-        "Thanks! Your RSVP is in â€” we can't wait to see you on September 13.";
+        "Thanks! Your RSVP is in. We can't wait to see you on September 13.";
       statusEl.classList.add("success");
       form.reset();
       iti.setCountry("us");
     } catch (err) {
       statusEl.textContent =
-        "Sorry â€” something went wrong sending your RSVP. Please try again later.";
+        "Sorry, something went wrong sending your RSVP. Please try again later.";
       statusEl.classList.add("error");
     } finally {
       submitBtn.disabled = false;
