@@ -246,7 +246,7 @@ img {
 }
 
 .btn.ghost {
-  background: transparent;
+  background: var(--white);
   color: var(--navy);
 }
 
