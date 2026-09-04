@@ -26,11 +26,6 @@
   function openDialog() {
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
-    var first = form.elements["name"];
-    if (first)
-      setTimeout(function () {
-        first.focus();
-      }, 50);
   }
 
   function closeDialog() {
