@@ -154,4 +154,11 @@
       submitBtn.textContent = originalText;
     }
   });
+
+  document.querySelector("#btnWatchInvite").addEventListener("click", (evt) => {
+    evt.preventDefault();
+    const watch = document.querySelector("#watch");
+    if (!watch) return;
+    watch.scrollIntoView({ behavior: "smooth" });
+  });
 })();
