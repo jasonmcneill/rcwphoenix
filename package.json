@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/jasonmcneill/rcwphoenix/issues"
   },
-  "homepage": "https://github.com/jasonmcneill/rcwphoenix#readme",
+  "homepage": "https://phoenixrcw.org/",
   "dependencies": {
     "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
