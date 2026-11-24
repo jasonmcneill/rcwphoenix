@@ -12,6 +12,7 @@
     setupShareButton();
     setupQrButton();
     loadGreeting();
+    addThanksgivingHolidayNotice();
   }
 
   function registerServiceWorker() {
