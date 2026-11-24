@@ -1,112 +1,81 @@
-/**
- * Returns the Date of U.S. Thanksgiving (fourth Thursday of November) for a given year.
- * @param {number} year
- * @returns {Date}
- */
-function getThanksgivingDate(year) {
-  // November 1 of the target year
-  const novFirst = new Date(year, 10, 1);
-  const dayOfWeek = novFirst.getDay(); // 0 = Sunday, 4 = Thursday
-
-  // Days until the first Thursday of November
-  const daysToFirstThursday = (4 - dayOfWeek + 7) % 7;
-
-  // Fourth Thursday is 21 days (3 weeks) after the first Thursday
-  const fourthThursdayDay = 1 + daysToFirstThursday + 21;
-  return new Date(year, 10, fourthThursdayDay);
-}
-
-/**
- * Checks whether a given Date falls within the Sunday-to-Saturday week of U.S. Thanksgiving.
- * @param {Date} date
- * @returns {boolean}
- */
-function isDuringThanksgivingWeek(date) {
-  if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
-    return false;
+(() => {
+  /**
+   * Returns the Date of U.S. Thanksgiving (fourth Thursday of November) for a given year.
+   * @param {number} year
+   * @returns {Date}
+   */
+  function getThanksgivingDate(year) {
+    const novFirst = new Date(year, 10, 1); // Month 10 = November
+    const dayOfWeek = novFirst.getDay(); // 0 = Sunday, 4 = Thursday
+    const daysToFirstThursday = (4 - dayOfWeek + 7) % 7;
+    const fourthThursdayDay = 1 + daysToFirstThursday + 21;
+    return new Date(year, 10, fourthThursdayDay);
   }
 
-  const thanksgiving = getThanksgivingDate(date.getFullYear());
+  /**
+   * Checks whether `date` falls within the Sunday-to-Saturday week of Thanksgiving.
+   * @param {Date} date
+   * @returns {boolean}
+   */
+  function isDuringThanksgivingWeek(date) {
+    const thanksgiving = getThanksgivingDate(date.getFullYear());
 
-  // Sunday of Thanksgiving week
-  const weekStart = new Date(
-    thanksgiving.getFullYear(),
-    thanksgiving.getMonth(),
-    thanksgiving.getDate() - thanksgiving.getDay(),
-    0,
-    0,
-    0,
-    0,
-  );
+    const weekStart = new Date(
+      thanksgiving.getFullYear(),
+      thanksgiving.getMonth(),
+      thanksgiving.getDate() - thanksgiving.getDay(), // Sunday
+      0,
+      0,
+      0,
+      0,
+    );
 
-  // Saturday of Thanksgiving week
-  const weekEnd = new Date(
-    weekStart.getFullYear(),
-    weekStart.getMonth(),
-    weekStart.getDate() + 6,
-    23,
-    59,
-    59,
-    999,
-  );
+    const weekEnd = new Date(
+      weekStart.getFullYear(),
+      weekStart.getMonth(),
+      weekStart.getDate() + 6, // Saturday
+      23,
+      59,
+      59,
+      999,
+    );
 
-  const normalizedDate = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    12,
-    0,
-    0,
-    0,
-  );
-
-  return normalizedDate >= weekStart && normalizedDate <= weekEnd;
-}
-
-/**
- * Extracts a Date from an element's `data-date`, `datetime`, or text content,
- * falling back to the current date if no parseable date is found.
- * @param {Element} el
- * @returns {Date}
- */
-function extractElementDate(el) {
-  const rawValue =
-    el.getAttribute("data-date") ||
-    el.getAttribute("datetime") ||
-    el.textContent?.trim();
-
-  if (rawValue) {
-    // Handle ISO date strings (YYYY-MM-DD) in local time to avoid UTC off-by-one shifts
-    const isoMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(rawValue);
-    if (isoMatch) {
-      const year = Number(isoMatch[1]);
-      const month = Number(isoMatch[2]) - 1;
-      const day = Number(isoMatch[3]);
-      return new Date(year, month, day);
-    }
-
-    const parsed = new Date(rawValue);
-    if (!Number.isNaN(parsed.getTime())) {
-      return parsed;
-    }
+    return date >= weekStart && date <= weekEnd;
   }
 
-  return new Date();
-}
+  /**
+   * Checks whether `date` falls between December 24 and December 26 (inclusive).
+   * @param {Date} date
+   * @returns {boolean}
+   */
+  function isDuringChristmasWeek(date) {
+    const year = date.getFullYear();
+    const start = new Date(year, 11, 24, 0, 0, 0, 0); // Month 11 = December
+    const end = new Date(year, 11, 26, 23, 59, 59, 999);
+    return date >= start && date <= end;
+  }
 
-/**
- * Finds all elements with class "cancelledDuringThanksgivingWeek" and removes
- * the "hidden" attribute if their associated date falls during U.S. Thanksgiving week.
- */
-function addThanksgivingHolidayNotice() {
-  const elements = document.querySelectorAll(
-    ".cancelledDuringThanksgivingWeek",
-  );
-
-  elements.forEach((el) => {
-    const targetDate = extractElementDate(el);
-    if (isDuringThanksgivingWeek(targetDate)) {
+  /**
+   * Removes the "hidden" attribute from all elements matching `selector`.
+   * @param {string} selector
+   */
+  function unhideElements(selector) {
+    document.querySelectorAll(selector).forEach((el) => {
       el.removeAttribute("hidden");
+    });
+  }
+
+  function init() {
+    const now = new Date();
+
+    if (isDuringThanksgivingWeek(now)) {
+      unhideElements(".cancelledDuringThanksgivingWeek");
     }
-  });
-}
+
+    if (isDuringChristmasWeek(now)) {
+      unhideElements(".cancelledDuringChristmasWeek");
+    }
+  }
+
+  init();
+})();

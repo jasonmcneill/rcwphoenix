@@ -336,3 +336,12 @@ body.has-fab {
   cursor: pointer;
   line-height: 2rem;
 }
+
+.cancelledDuringThanksgivingWeek,
+.cancelledDuringChristmasWeek {
+  background-color: var(--orange);
+  color: var(--cream);
+  border: 1px solid var(--cream);
+  font-weight: bold;
+  margin: 1rem auto 1.5rem auto;
+}
